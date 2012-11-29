@@ -1,6 +1,6 @@
 ---
 title       : Plotting in R
-subtitle    : 
+subtitle    : http://cogworks.cogsci.rpi.edu/plotting-in-r
 author      : Ryan Hope
 job         : CogWorks Lab, Rensselaer Polytechnic Institute
 biglogo     : rpi_logo.png
@@ -36,6 +36,14 @@ require(ggplot2)
 <img width='400px' src="assets/img/thumbs_down_smiley2red.png">
 
 ### DONT WASTE YOUR TIME
+
+--- &vcenter
+
+## Test Data
+
+```{r eval=FALSE}
+source("http://cogworks.cogsci.rpi.edu/plotting-in-r/data.R")
+```
 
 ---
 
@@ -538,6 +546,16 @@ levelplot(z~x+y,d4)
 
 ```{r echo=FALSE, fig.height=6}
 levelplot(z~x+y,d4)
+```
+
+---
+
+## Lattice - need help?
+
+### The arguments and valid values for all lattice plot functions are described in the help page for 'xyplot'.
+
+```{r eval=FALSE, sanitize=FALSE}
+help(trellis)
 ```
 
 ---

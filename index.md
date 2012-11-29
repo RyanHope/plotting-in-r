@@ -1,6 +1,6 @@
 ---
 title       : Plotting in R
-subtitle    : 
+subtitle    : http://cogworks.cogsci.rpi.edu/plotting-in-r
 author      : Ryan Hope
 job         : CogWorks Lab, Rensselaer Polytechnic Institute
 biglogo     : rpi_logo.png
@@ -35,6 +35,16 @@ mode        : selfcontained # {standalone, draft}
 
 ### DONT WASTE YOUR TIME
 
+--- &vcenter
+
+## Test Data
+
+
+```r
+source("http://cogworks.cogsci.rpi.edu/plotting-in-r/data.R")
+```
+
+
 ---
 
 ## Test Data 1 - Long Format
@@ -49,7 +59,7 @@ str(d1)
 
 ```
 ## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  -0.0239 -0.4165 -0.0245 -0.2338 -0.0982 ...
+##  $ y   : num  0.201 0.499 -0.143 -0.128 -0.114 ...
 ##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
 ##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
 ```
@@ -68,8 +78,8 @@ str(d2)
 ```
 ## 'data.frame':	100 obs. of  3 variables:
 ##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ y.sin: num  -0.0239 -0.4165 -0.0245 -0.2338 -0.0982 ...
-##  $ y.cos: num  -1.001 -0.71 -0.778 -1.213 -1.248 ...
+##  $ y.sin: num  0.201 0.499 -0.143 -0.128 -0.114 ...
+##  $ y.cos: num  -1.184 -0.682 -1.217 -0.71 -0.68 ...
 ```
 
 
@@ -148,7 +158,7 @@ histogram(~y, d3)
 
 *** right
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 
 --- &twocol
@@ -165,7 +175,7 @@ histogram(~y | as.factor(g), d3)
 
 *** right
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
 
 
 --- &twocol
@@ -183,7 +193,7 @@ barchart(y ~ as.factor(x),
 
 *** right
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
 
 
 --- &twocol
@@ -201,7 +211,7 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 *** right
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png) 
 
 
 --- &twocol
@@ -220,7 +230,7 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 *** right
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17.png) 
 
 
 --- &twocol
@@ -239,7 +249,7 @@ barchart(y ~ as.factor(x),
 
 *** right
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18.png) 
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19.png) 
 
 
 --- &twocol
@@ -259,7 +269,7 @@ barchart(y ~ as.factor(x),
 
 *** right
 
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20.png) 
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21.png) 
 
 
 --- &twocol
@@ -279,7 +289,7 @@ barchart(y ~ as.factor(x),
 
 *** right
 
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22.png) 
+![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23.png) 
 
 
 --- &twocol
@@ -299,7 +309,7 @@ barchart(y ~ as.factor(x),
 
 *** right
 
-![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24.png) 
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25.png) 
 
 
 --- &twocol
@@ -316,7 +326,7 @@ xyplot(y ~ x, d1)
 
 *** right
 
-![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26.png) 
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27.png) 
 
 
 --- &twocol
@@ -333,7 +343,7 @@ xyplot(y ~ x | type, d1)
 
 *** right
 
-![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28.png) 
+![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29.png) 
 
 
 --- &twocol
@@ -351,7 +361,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30.png) 
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31.png) 
 
 
 --- &twocol
@@ -369,7 +379,7 @@ xyplot(y.cos + y.sin ~ x, d2,
 
 *** right
 
-![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32.png) 
+![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33.png) 
 
 
 --- &twocol
@@ -388,7 +398,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34.png) 
+![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35.png) 
 
 
 --- &twocol
@@ -407,7 +417,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36.png) 
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37.png) 
 
 
 --- &twocol
@@ -426,7 +436,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38.png) 
+![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39.png) 
 
 
 --- &twocol
@@ -446,7 +456,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40.png) 
+![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41.png) 
 
 
 --- &twocol
@@ -469,7 +479,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42.png) 
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43.png) 
 
 
 --- &twocol
@@ -492,7 +502,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44.png) 
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45.png) 
 
 
 --- &twocol
@@ -517,7 +527,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** right
 
-![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46.png) 
+![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47.png) 
 
 
 --- &twocol
@@ -534,7 +544,19 @@ levelplot(z ~ x + y, d4)
 
 *** right
 
-![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48.png) 
+![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49.png) 
+
+
+---
+
+## Lattice - need help?
+
+### The arguments and valid values for all lattice plot functions are described in the help page for 'xyplot'.
+
+
+```r
+help(trellis)
+```
 
 
 ---
