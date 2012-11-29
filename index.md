@@ -49,7 +49,7 @@ str(d1)
 
 ```
 ## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  -0.497 0.279 0.392 0.125 0.547 ...
+##  $ y   : num  -0.587 -0.208 0.383 0.56 0.279 ...
 ##  $ x   : num  0 0.127 0.254 0.381 0.508 ...
 ##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
 ```
@@ -68,8 +68,8 @@ str(d2)
 ```
 ## 'data.frame':	100 obs. of  3 variables:
 ##  $ x    : num  0 0.127 0.254 0.381 0.508 ...
-##  $ y.sin: num  -0.497 0.279 0.392 0.125 0.547 ...
-##  $ y.cos: num  0.807 0.704 0.976 1.231 0.761 ...
+##  $ y.sin: num  -0.587 -0.208 0.383 0.56 0.279 ...
+##  $ y.cos: num  1.008 0.888 1.068 0.855 0.791 ...
 ```
 
 
@@ -79,10 +79,25 @@ str(d2)
 
 
 ```r
-d3 <- data.frame(x=rep(1:5,each=100),
-                 y=c(unlist(lapply(1:5, function(x){rnorm(n=100,mean=2^x)})),
-                     unlist(lapply(1:5, function(x){rnorm(n=100,mean=50+2^x)}))),
-                 g=rep(1:2,each=500))
+d3 <- data.frame(
+  x=rep(1:5,each=100),
+  y=c(unlist(lapply(1:5, function(x){rnorm(n=100,mean=2^x)})),
+      unlist(lapply(1:5, function(x){rnorm(n=100,mean=50+2^x)}))),
+  g=rep(1:2,each=500))
+```
+
+
+---
+
+## Test Data 4
+
+
+```r
+x <- seq(pi/4, 5 * pi, length.out = 100)
+y <- seq(pi/4, 5 * pi, length.out = 100)
+r <- as.vector(sqrt(outer(x^2, y^2, "+")))
+d4 <- expand.grid(x = x, y = y)
+d4$z <- cos(r^2) * exp(-r/(pi^3))
 ```
 
 
@@ -119,76 +134,108 @@ install.packages("lattice", dependencies = TRUE)
 - <span style="color:blue;">cloud</span>: Three-dimensional scatter plots
 - <span style="color:blue;">wireframe</span>: Three-dimensional surface plots
 
----
+--- &twocol
 
 ## Lattice - xyplot
 
-
-```r
-xyplot(y ~ x, d1)  # long data
-```
-
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
-
-
----
-
-## Lattice - xyplot w/ conditioning factor
+*** left
 
 
 ```r
-xyplot(y ~ x | type, d1)  # long data
+xyplot(y ~ x, d1)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
-
----
-
-## Lattice - xyplot w/ grouping factor
-
-
-```r
-xyplot(y ~ x, d1, groups = type)  # long data
-```
+*** right
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
 
 
----
+--- &twocol
 
-## Lattice - xyplot w/ two y variables
+## Lattice - xyplot w/ conditioning factor
 
-
-```r
-xyplot(y.cos + y.sin ~ x, d2)  # wide data
-```
-
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
-
-
----
-
-## Lattice - xyplot w/ type="l"
+*** left
 
 
 ```r
-xyplot(y ~ x, d1, groups = type, type = "l")  # long data
+xyplot(y ~ x | type, d1)
 ```
+
+
+*** right
 
 ![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
 
 
----
+--- &twocol
 
-## Lattice - xyplot w/ type="b"
+## Lattice - xyplot w/ grouping factor
+
+*** left
 
 
 ```r
-xyplot(y ~ x, d1, groups = type, type = "b")  # long data
+xyplot(y ~ x, d1, groups = type)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
+
+*** right
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
+
+
+--- &twocol
+
+## Lattice - xyplot w/ two y variables
+
+*** left
+
+
+```r
+xyplot(y.cos + y.sin ~ x, d2)
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
+
+
+--- &twocol
+
+## Lattice - xyplot w/ type="l"
+
+*** left
+
+
+```r
+xyplot(y ~ x, d1, groups = type,
+  type = "l")
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
+
+
+--- &twocol
+
+## Lattice - xyplot w/ type="b"
+
+*** left
+
+
+```r
+xyplot(y ~ x, d1, groups = type,
+  type = "b")
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18.png) 
 
 
 --- &twocol
@@ -199,17 +246,18 @@ xyplot(y ~ x, d1, groups = type, type = "b")  # long data
 
 
 ```r
-xyplot(y ~ x, d1, groups = type, type="b",
-       panel=function(...) {
-         panel.xyplot(...)
-         }
-       )
+xyplot(y ~ x, d1, groups = type, 
+  type = "b",
+  panel=function(...) {
+    panel.xyplot(...)
+  }
+)
 ```
 
 
 *** right
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20.png) 
 
 
 --- &twocol
@@ -220,93 +268,14 @@ xyplot(y ~ x, d1, groups = type, type="b",
 
 
 ```r
-xyplot(y ~ x, d1, groups = type, type="p",
-  panel=panel.superpose,
-  panel.groups=function(...,pch,lwd) {
-    panel.xyplot(...,pch=2)
-    panel.loess(..., span=.2, lwd=4)
+xyplot(y ~ x, d1, groups = type,
+  type = "p",
+  panel = panel.superpose,
+  panel.groups = function(..., pch, lwd) {
+    panel.xyplot(..., pch = 2)
+    panel.loess(..., span = .2, lwd = 4)
   }
 )
-```
-
-
-*** right
-
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png) 
-
-
----
-
-## Lattice - histogram
-
-
-```r
-histogram(~y, d3)
-```
-
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
-
-
----
-
-## Lattice - histogram w/ conditioning factor
-
-
-```r
-histogram(~y | as.factor(g), d3)
-```
-
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17.png) 
-
-
----
-
-## Lattice - barchart
-
-
-```r
-barchart(y ~ as.factor(x), aggregate(y ~ x, data = d3, mean))
-```
-
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18.png) 
-
-
----
-
-## Lattice - barchart w/ conditioning factor
-
-
-```r
-barchart(y ~ as.factor(x) | as.factor(g), aggregate(y ~ x + g, data = d3, mean))
-```
-
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19.png) 
-
-
----
-
-## Lattice - barchart w/ grouping factor
-
-
-```r
-barchart(y ~ as.factor(x), aggregate(y ~ x + g, data = d3, mean), groups = as.factor(g))
-```
-
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20.png) 
-
-
---- &twocol
-
-## Lattice - barchart w/ auto.key
-
-*** left
-
-
-```r
-barchart(y~as.factor(x),
-         aggregate(y~x+g,data=d3,mean),
-         groups=as.factor(g),
-         auto.key=T)
 ```
 
 
@@ -317,16 +286,13 @@ barchart(y~as.factor(x),
 
 --- &twocol
 
-## Lattice - barchart w/ auto.key
+## Lattice - histogram
 
 *** left
 
 
 ```r
-barchart(y~as.factor(x),
-         aggregate(y~x+g,data=d3,mean),
-         groups=as.factor(g),
-         auto.key=list(columns=2))
+histogram(~y, d3)
 ```
 
 
@@ -337,20 +303,149 @@ barchart(y~as.factor(x),
 
 --- &twocol
 
-## Lattice - barchart w/ auto.key
+## Lattice - histogram w/ conditioning factor
 
 *** left
 
 
 ```r
-barchart(y~as.factor(x),
-         aggregate(y~x+g,data=d3,mean),
-         groups=as.factor(g),
-         auto.key=list(space="right"))
+histogram(~y | as.factor(g), d3)
 ```
 
 
 *** right
 
 ![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26.png) 
+
+
+--- &twocol
+
+## Lattice - barchart
+
+*** left
+
+
+```r
+barchart(y ~ as.factor(x),
+  aggregate(y ~ x, data = d3, mean))
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28.png) 
+
+
+--- &twocol
+
+## Lattice - barchart w/ conditioning factor
+
+*** left
+
+
+```r
+barchart(y ~ as.factor(x) | as.factor(g),
+  aggregate(y ~ x + g, data = d3, mean))
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30.png) 
+
+
+--- &twocol
+
+## Lattice - barchart w/ grouping factor
+
+*** left
+
+
+```r
+barchart(y ~ as.factor(x),
+  aggregate(y ~ x + g, data = d3, mean),
+  groups = as.factor(g))
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32.png) 
+
+
+--- &twocol
+
+## Lattice - barchart w/ auto.key
+
+*** left
+
+
+```r
+barchart(y ~ as.factor(x),
+  aggregate(y ~ x + g, data = d3, mean),
+  groups = as.factor(g),
+  auto.key = T)
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34.png) 
+
+
+--- &twocol
+
+## Lattice - barchart w/ auto.key
+
+*** left
+
+
+```r
+barchart(y ~ as.factor(x),
+  aggregate(y ~ x + g, data = d3, mean),
+  groups = as.factor(g),
+  auto.key = list(columns = 2))
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36.png) 
+
+
+--- &twocol
+
+## Lattice - barchart w/ auto.key
+
+*** left
+
+
+```r
+barchart(y ~ as.factor(x),
+  aggregate(y ~ x + g, data = d3, mean),
+  groups = as.factor(g),
+  auto.key = list(space = "right"))
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38.png) 
+
+
+--- &twocol
+
+## Lattice - levelplot
+
+*** left
+
+
+```r
+levelplot(z ~ x + y, d4)
+```
+
+
+*** right
+
+![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40.png) 
 
