@@ -539,3 +539,13 @@ levelplot(z~x+y,d4)
 ```{r echo=FALSE, fig.height=6}
 levelplot(z~x+y,d4)
 ```
+
+---
+
+## ggplot2
+
+### Great documentation and examples available online
+
+- http://docs.ggplot2.org/current
+- http://www.ceb-institute.org/bbs/wp-content/uploads/2011/09/handout_ggplot2.pdf
+- http://wiki.stdout.org/rcookbook/Graphs

@@ -49,7 +49,7 @@ str(d1)
 
 ```
 ## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  0.217 -0.202 0.203 -0.268 -0.287 ...
+##  $ y   : num  -0.0239 -0.4165 -0.0245 -0.2338 -0.0982 ...
 ##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
 ##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
 ```
@@ -68,8 +68,8 @@ str(d2)
 ```
 ## 'data.frame':	100 obs. of  3 variables:
 ##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ y.sin: num  0.217 -0.202 0.203 -0.268 -0.287 ...
-##  $ y.cos: num  -0.571 -0.881 -0.881 -0.781 -1.097 ...
+##  $ y.sin: num  -0.0239 -0.4165 -0.0245 -0.2338 -0.0982 ...
+##  $ y.cos: num  -1.001 -0.71 -0.778 -1.213 -1.248 ...
 ```
 
 
@@ -536,3 +536,13 @@ levelplot(z ~ x + y, d4)
 
 ![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48.png) 
 
+
+---
+
+## ggplot2
+
+### Great documentation and examples available online
+
+- http://docs.ggplot2.org/current
+- http://www.ceb-institute.org/bbs/wp-content/uploads/2011/09/handout_ggplot2.pdf
+- http://wiki.stdout.org/rcookbook/Graphs
