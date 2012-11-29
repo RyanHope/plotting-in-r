@@ -42,7 +42,7 @@ require(ggplot2)
 ## Test Data 1 - Long Format
 
 ```{r}
-x <- seq(0,4*pi,length.out=100)
+x <- seq(-pi,pi,length.out=100)
 y <- c(sin(x),cos(x)) + rnorm(200,sd=.25)
 d1 <- data.frame(y=y,x=rep(x,2),type=rep(c("sin","cos"),each=length(x)))
 str(d1)
@@ -114,162 +114,6 @@ install.packages('lattice', dependencies = TRUE)
 
 --- &twocol
 
-## Lattice - xyplot
-
-*** left
-
-```{r eval=FALSE}
-xyplot(y~x,d1)
-```
-
-*** right
-
-```{r echo=FALSE, fig.height=6}
-xyplot(y~x,d1)
-```
-
---- &twocol
-
-## Lattice - xyplot w/ conditioning factor
-
-*** left
-
-```{r eval=FALSE}
-xyplot(y~x|type,d1)
-```
-
-*** right
-
-```{r echo=FALSE, fig.height=6}
-xyplot(y~x|type,d1)
-```
-
---- &twocol
-
-## Lattice - xyplot w/ grouping factor
-
-*** left
-
-```{r eval=FALSE}
-xyplot(y~x,d1,groups=type)
-```
-
-*** right
-
-```{r echo=FALSE, fig.height=6}
-xyplot(y~x,d1,groups=type)
-```
-
---- &twocol
-
-## Lattice - xyplot w/ two y variables
-
-*** left
-
-```{r eval=FALSE}
-xyplot(y.cos+y.sin~x,d2)
-```
-
-*** right
-
-```{r echo=FALSE, fig.height=6}
-xyplot(y.cos+y.sin~x,d2)
-```
-
---- &twocol
-
-## Lattice - xyplot w/ type="l"
-
-*** left
-
-```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
-  type = "l")
-```
-
-*** right
-
-```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
-  type = "l")
-```
-
---- &twocol
-
-## Lattice - xyplot w/ type="b"
-
-*** left
-
-```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
-  type = "b")
-```
-
-*** right
-
-```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
-  type = "b")
-```
-
---- &twocol
-
-## Lattice Panels
-
-*** left
-
-```{r eval=F, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type, 
-  type = "b",
-  panel=function(...) {
-    panel.xyplot(...)
-  }
-)
-```
-
-*** right
-
-```{r echo=F, fig.height=6}
-xyplot(y ~ x, d1, groups = type, 
-  type = "b",
-  panel=function(...) {
-    panel.xyplot(...)
-  }
-)
-```
-
---- &twocol
-
-## Lattice Panels + Smoother
-
-*** left
-
-```{r eval=F, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
-  type = "p",
-  panel = panel.superpose,
-  panel.groups = function(..., pch, lwd) {
-    panel.xyplot(..., pch = 2)
-    panel.loess(..., span = .2, lwd = 4)
-  }
-)
-```
-
-*** right
-
-```{r echo=F, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
-  type = "p",
-  panel = panel.superpose,
-  panel.groups = function(..., pch, lwd) {
-    panel.xyplot(..., pch = 2)
-    panel.loess(..., span = .2, lwd = 4)
-  }
-)
-```
-
---- &twocol
-
 ## Lattice - histogram
 
 *** left
@@ -334,6 +178,26 @@ barchart(y ~ as.factor(x) | as.factor(g),
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x) | as.factor(g),
   aggregate(y ~ x + g, data = d3, mean))
+```
+
+--- &twocol
+
+## Lattice - condition barchart w/ free scales
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+barchart(y ~ as.factor(x) | as.factor(g),
+  aggregate(y ~ x + g, data = d3, mean),
+  scales=list(y=list(relation="free")))
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+barchart(y ~ as.factor(x) | as.factor(g),
+  aggregate(y ~ x + g, data = d3, mean),
+  scales=list(y=list(relation="free")))
 ```
 
 --- &twocol
@@ -420,6 +284,244 @@ barchart(y ~ as.factor(x),
   aggregate(y ~ x + g, data = d3, mean),
   groups = as.factor(g),
   auto.key = list(space = "right"))
+```
+
+--- &twocol
+
+## Lattice - xyplot
+
+*** left
+
+```{r eval=FALSE}
+xyplot(y~x,d1)
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y~x,d1)
+```
+
+--- &twocol
+
+## Lattice - xyplot w/ conditioning factor
+
+*** left
+
+```{r eval=FALSE}
+xyplot(y~x|type,d1)
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y~x|type,d1)
+```
+
+--- &twocol
+
+## Lattice - xyplot w/ grouping factor
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"))
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"))
+```
+
+--- &twocol
+
+## Lattice - xyplot w/ two y variables
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+xyplot(y.cos + y.sin ~ x, d2,
+  auto.key = list(space = "right"))
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y.cos + y.sin ~ x, d2,
+  auto.key = list(space = "right"))
+```
+
+--- &twocol
+
+## Lattice - xyplot - changing plot type
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "l")
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "l")
+```
+
+--- &twocol
+
+## Lattice - xyplot - changing plot type
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "b")
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "b")
+```
+
+--- &twocol
+
+## Lattice - xyplot - opther options
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "b", pch=2, cex=.5, lty=2, lwd=2)
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "b", pch=2, cex=.5, lty=2, lwd=2)
+```
+
+--- &twocol
+
+## Lattice - xyplot - tick locations
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  scales = list(x = list(
+    at = c(-pi, -pi/2, 0, pi/2, pi))))
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  scales = list(x = list(
+    at = c(-pi, -pi/2, 0, pi/2, pi))))
+```
+
+--- &twocol
+
+## Lattice - xyplot - tick labels
+
+*** left
+
+```{r eval=FALSE, tidy=FALSE}
+l <- expression(-pi, -pi/2, 0, pi/2, pi)
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  scales = list(x = list(
+    at = c(-pi, -pi/2, 0, pi/2, pi),
+    labels = l
+    )))
+```
+
+*** right
+
+```{r echo=FALSE, fig.height=6}
+l <- expression(-pi, -pi/2, 0, pi/2, pi)
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  scales = list(x = list(
+    at = c(-pi, -pi/2, 0, pi/2, pi),
+    labels = l
+    )))
+```
+
+--- &twocol
+
+## Lattice Panels
+
+*** left
+
+```{r eval=F, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "b",
+  panel=function(...) {
+    panel.xyplot(...)
+  }
+)
+```
+
+*** right
+
+```{r echo=F, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "b",
+  panel=function(...) {
+    panel.xyplot(...)
+  }
+)
+```
+
+--- &twocol
+
+## Lattice Panels + Smoother
+
+*** left
+
+```{r eval=F, tidy=FALSE}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "p",
+  panel = panel.superpose,
+  panel.groups = function(..., pch, lwd) {
+    panel.xyplot(..., pch = 2)
+    panel.loess(..., span = .2, lwd = 4)
+  }
+)
+```
+
+*** right
+
+```{r echo=F, fig.height=6}
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = "right"),
+  type = "p",
+  panel = panel.superpose,
+  panel.groups = function(..., pch, lwd) {
+    panel.xyplot(..., pch = 2)
+    panel.loess(..., span = .2, lwd = 4)
+  }
+)
 ```
 
 --- &twocol

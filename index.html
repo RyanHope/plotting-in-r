@@ -94,15 +94,15 @@
     <h2>Test Data 1 - Long Format</h2>
   </hgroup>
   <article>
-    <pre><code class="r">x &lt;- seq(0, 4 * pi, length.out = 100)
+    <pre><code class="r">x &lt;- seq(-pi, pi, length.out = 100)
 y &lt;- c(sin(x), cos(x)) + rnorm(200, sd = 0.25)
 d1 &lt;- data.frame(y = y, x = rep(x, 2), type = rep(c(&quot;sin&quot;, &quot;cos&quot;), each = length(x)))
 str(d1)
 </code></pre>
 
 <pre><code>## &#39;data.frame&#39;:    200 obs. of  3 variables:
-##  $ y   : num  -0.587 -0.208 0.383 0.56 0.279 ...
-##  $ x   : num  0 0.127 0.254 0.381 0.508 ...
+##  $ y   : num  0.217 -0.202 0.203 -0.268 -0.287 ...
+##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
 ##  $ type: Factor w/ 2 levels &quot;cos&quot;,&quot;sin&quot;: 2 2 2 2 2 2 2 2 2 2 ...
 </code></pre>
 
@@ -120,9 +120,9 @@ str(d2)
 </code></pre>
 
 <pre><code>## &#39;data.frame&#39;:    100 obs. of  3 variables:
-##  $ x    : num  0 0.127 0.254 0.381 0.508 ...
-##  $ y.sin: num  -0.587 -0.208 0.383 0.56 0.279 ...
-##  $ y.cos: num  1.008 0.888 1.068 0.855 0.791 ...
+##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
+##  $ y.sin: num  0.217 -0.202 0.203 -0.268 -0.287 ...
+##  $ y.cos: num  -0.571 -0.881 -0.881 -0.781 -1.097 ...
 </code></pre>
 
   </article>
@@ -209,12 +209,12 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
       <slide class="" id="slide-8" style="background:;">
   <hgroup>
-    <h2>Lattice - xyplot</h2>
+    <h2>Lattice - histogram</h2>
   </hgroup>
   <article>
     
 <div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x, d1)
+  <pre><code class="r">histogram(~y, d3)
 </code></pre>
 
 
@@ -229,12 +229,12 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
       <slide class="" id="slide-9" style="background:;">
   <hgroup>
-    <h2>Lattice - xyplot w/ conditioning factor</h2>
+    <h2>Lattice - histogram w/ conditioning factor</h2>
   </hgroup>
   <article>
     
 <div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x | type, d1)
+  <pre><code class="r">histogram(~y | as.factor(g), d3)
 </code></pre>
 
 
@@ -249,12 +249,13 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
       <slide class="" id="slide-10" style="background:;">
   <hgroup>
-    <h2>Lattice - xyplot w/ grouping factor</h2>
+    <h2>Lattice - barchart</h2>
   </hgroup>
   <article>
     
 <div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x, d1, groups = type)
+  <pre><code class="r">barchart(y ~ as.factor(x),
+  aggregate(y ~ x, data = d3, mean))
 </code></pre>
 
 
@@ -269,12 +270,13 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
       <slide class="" id="slide-11" style="background:;">
   <hgroup>
-    <h2>Lattice - xyplot w/ two y variables</h2>
+    <h2>Lattice - barchart w/ conditioning factor</h2>
   </hgroup>
   <article>
     
 <div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y.cos + y.sin ~ x, d2)
+  <pre><code class="r">barchart(y ~ as.factor(x) | as.factor(g),
+  aggregate(y ~ x + g, data = d3, mean))
 </code></pre>
 
 
@@ -289,13 +291,14 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
       <slide class="" id="slide-12" style="background:;">
   <hgroup>
-    <h2>Lattice - xyplot w/ type=&quot;l&quot;</h2>
+    <h2>Lattice - condition barchart w/ free scales</h2>
   </hgroup>
   <article>
     
 <div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
-  type = &quot;l&quot;)
+  <pre><code class="r">barchart(y ~ as.factor(x) | as.factor(g),
+  aggregate(y ~ x + g, data = d3, mean),
+  scales=list(y=list(relation=&quot;free&quot;)))
 </code></pre>
 
 
@@ -310,161 +313,6 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
       <slide class="" id="slide-13" style="background:;">
   <hgroup>
-    <h2>Lattice - xyplot w/ type=&quot;b&quot;</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
-  type = &quot;b&quot;)
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-18.png" alt="plot of chunk unnamed-chunk-18"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-14" style="background:;">
-  <hgroup>
-    <h2>Lattice Panels</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x, d1, groups = type, 
-  type = &quot;b&quot;,
-  panel=function(...) {
-    panel.xyplot(...)
-  }
-)
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-20.png" alt="plot of chunk unnamed-chunk-20"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-15" style="background:;">
-  <hgroup>
-    <h2>Lattice Panels + Smoother</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
-  type = &quot;p&quot;,
-  panel = panel.superpose,
-  panel.groups = function(..., pch, lwd) {
-    panel.xyplot(..., pch = 2)
-    panel.loess(..., span = .2, lwd = 4)
-  }
-)
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-22.png" alt="plot of chunk unnamed-chunk-22"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-16" style="background:;">
-  <hgroup>
-    <h2>Lattice - histogram</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">histogram(~y, d3)
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-24.png" alt="plot of chunk unnamed-chunk-24"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-17" style="background:;">
-  <hgroup>
-    <h2>Lattice - histogram w/ conditioning factor</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">histogram(~y | as.factor(g), d3)
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-26.png" alt="plot of chunk unnamed-chunk-26"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-18" style="background:;">
-  <hgroup>
-    <h2>Lattice - barchart</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">barchart(y ~ as.factor(x),
-  aggregate(y ~ x, data = d3, mean))
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-28.png" alt="plot of chunk unnamed-chunk-28"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-19" style="background:;">
-  <hgroup>
-    <h2>Lattice - barchart w/ conditioning factor</h2>
-  </hgroup>
-  <article>
-    
-<div style='float:left;width:48%;'>
-  <pre><code class="r">barchart(y ~ as.factor(x) | as.factor(g),
-  aggregate(y ~ x + g, data = d3, mean))
-</code></pre>
-
-
-</div>
-<div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-30.png" alt="plot of chunk unnamed-chunk-30"> </p>
-
-</div>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-20" style="background:;">
-  <hgroup>
     <h2>Lattice - barchart w/ grouping factor</h2>
   </hgroup>
   <article>
@@ -478,14 +326,14 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
 </div>
 <div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-32.png" alt="plot of chunk unnamed-chunk-32"> </p>
+  <p><img src="figure/unnamed-chunk-18.png" alt="plot of chunk unnamed-chunk-18"> </p>
 
 </div>
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-21" style="background:;">
+      <slide class="" id="slide-14" style="background:;">
   <hgroup>
     <h2>Lattice - barchart w/ auto.key</h2>
   </hgroup>
@@ -501,14 +349,14 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
 </div>
 <div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34"> </p>
+  <p><img src="figure/unnamed-chunk-20.png" alt="plot of chunk unnamed-chunk-20"> </p>
 
 </div>
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-22" style="background:;">
+      <slide class="" id="slide-15" style="background:;">
   <hgroup>
     <h2>Lattice - barchart w/ auto.key</h2>
   </hgroup>
@@ -524,14 +372,14 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
 </div>
 <div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36"> </p>
+  <p><img src="figure/unnamed-chunk-22.png" alt="plot of chunk unnamed-chunk-22"> </p>
 
 </div>
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-23" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>Lattice - barchart w/ auto.key</h2>
   </hgroup>
@@ -547,6 +395,154 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
 </div>
 <div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-24.png" alt="plot of chunk unnamed-chunk-24"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-26.png" alt="plot of chunk unnamed-chunk-26"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot w/ conditioning factor</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x | type, d1)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-28.png" alt="plot of chunk unnamed-chunk-28"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot w/ grouping factor</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;))
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-30.png" alt="plot of chunk unnamed-chunk-30"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot w/ two y variables</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y.cos + y.sin ~ x, d2,
+  auto.key = list(space = &quot;right&quot;))
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-32.png" alt="plot of chunk unnamed-chunk-32"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot - changing plot type</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  type = &quot;l&quot;)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot - changing plot type</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  type = &quot;b&quot;)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot - opther options</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  type = &quot;b&quot;, pch=2, cex=.5, lty=2, lwd=2)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
   <p><img src="figure/unnamed-chunk-38.png" alt="plot of chunk unnamed-chunk-38"> </p>
 
 </div>
@@ -555,6 +551,109 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 </slide>
 
       <slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot - tick locations</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  scales = list(x = list(
+    at = c(-pi, -pi/2, 0, pi/2, pi))))
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-40.png" alt="plot of chunk unnamed-chunk-40"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>Lattice - xyplot - tick labels</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">l &lt;- expression(-pi, -pi/2, 0, pi/2, pi)
+xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  scales = list(x = list(
+    at = c(-pi, -pi/2, 0, pi/2, pi),
+    labels = l
+    )))
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-42.png" alt="plot of chunk unnamed-chunk-42"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Lattice Panels</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  type = &quot;b&quot;,
+  panel=function(...) {
+    panel.xyplot(...)
+  }
+)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-44.png" alt="plot of chunk unnamed-chunk-44"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Lattice Panels + Smoother</h2>
+  </hgroup>
+  <article>
+    
+<div style='float:left;width:48%;'>
+  <pre><code class="r">xyplot(y ~ x, d1, groups = type,
+  auto.key = list(space = &quot;right&quot;),
+  type = &quot;p&quot;,
+  panel = panel.superpose,
+  panel.groups = function(..., pch, lwd) {
+    panel.xyplot(..., pch = 2)
+    panel.loess(..., span = .2, lwd = 4)
+  }
+)
+</code></pre>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/unnamed-chunk-46.png" alt="plot of chunk unnamed-chunk-46"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Lattice - levelplot</h2>
   </hgroup>
@@ -567,7 +666,7 @@ d4$z &lt;- cos(r^2) * exp(-r/(pi^3))
 
 </div>
 <div style='float:right;width:48%;'>
-  <p><img src="figure/unnamed-chunk-40.png" alt="plot of chunk unnamed-chunk-40"> </p>
+  <p><img src="figure/unnamed-chunk-48.png" alt="plot of chunk unnamed-chunk-48"> </p>
 
 </div>
   </article>
