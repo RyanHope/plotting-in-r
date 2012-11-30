@@ -1,6 +1,6 @@
 ---
 title       : Plotting in R
-subtitle    : http://cogworks.cogsci.rpi.edu/plotting-in-r
+subtitle    : http://ryanhope.github.com/plotting-in-r
 author      : Ryan Hope
 job         : CogWorks Lab, Rensselaer Polytechnic Institute
 biglogo     : rpi_logo.png
@@ -42,7 +42,7 @@ require(ggplot2)
 ## Test Data
 
 ```{r eval=FALSE}
-source("http://cogworks.cogsci.rpi.edu/plotting-in-r/data.R")
+source("https://raw.github.com/RyanHope/plotting-in-r/gh-pages/data.R")
 ```
 
 ---

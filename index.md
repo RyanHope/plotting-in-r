@@ -1,6 +1,6 @@
 ---
 title       : Plotting in R
-subtitle    : http://cogworks.cogsci.rpi.edu/plotting-in-r
+subtitle    : http://ryanhope.github.com/plotting-in-r
 author      : Ryan Hope
 job         : CogWorks Lab, Rensselaer Polytechnic Institute
 biglogo     : rpi_logo.png
@@ -41,7 +41,7 @@ mode        : selfcontained # {standalone, draft}
 
 
 ```r
-source("http://cogworks.cogsci.rpi.edu/plotting-in-r/data.R")
+source("https://raw.github.com/RyanHope/plotting-in-r/gh-pages/data.R")
 ```
 
 
@@ -59,7 +59,7 @@ str(d1)
 
 ```
 ## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  0.201 0.499 -0.143 -0.128 -0.114 ...
+##  $ y   : num  0.2224 0.1602 -0.2249 0.0778 -0.2146 ...
 ##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
 ##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
 ```
@@ -78,8 +78,8 @@ str(d2)
 ```
 ## 'data.frame':	100 obs. of  3 variables:
 ##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ y.sin: num  0.201 0.499 -0.143 -0.128 -0.114 ...
-##  $ y.cos: num  -1.184 -0.682 -1.217 -0.71 -0.68 ...
+##  $ y.sin: num  0.2224 0.1602 -0.2249 0.0778 -0.2146 ...
+##  $ y.cos: num  -0.707 -0.675 -0.624 -1.04 -0.943 ...
 ```
 
 
