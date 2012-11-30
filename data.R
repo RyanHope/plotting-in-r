@@ -1,5 +1,3 @@
-require(reshape)
-
 x <- seq(-pi,pi,length.out=100)
 y <- c(sin(x),cos(x)) + rnorm(200,sd=.25)
 d1 <- data.frame(y=y,x=rep(x,2),type=rep(c("sin","cos"),each=length(x)))
