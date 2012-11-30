@@ -10,6 +10,9 @@ highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : []            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
+github      :
+              author  : ryanhope
+              repo    : plotting-in-r
 ---
 
 ## Graphics Frameworks
@@ -59,7 +62,7 @@ str(d1)
 
 ```
 ## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  0.2224 0.1602 -0.2249 0.0778 -0.2146 ...
+##  $ y   : num  0.335 -0.262 -0.4 -0.3 0.171 ...
 ##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
 ##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
 ```
@@ -78,8 +81,8 @@ str(d2)
 ```
 ## 'data.frame':	100 obs. of  3 variables:
 ##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ y.sin: num  0.2224 0.1602 -0.2249 0.0778 -0.2146 ...
-##  $ y.cos: num  -0.707 -0.675 -0.624 -1.04 -0.943 ...
+##  $ y.sin: num  0.335 -0.262 -0.4 -0.3 0.171 ...
+##  $ y.cos: num  -0.97 -0.865 -0.57 -0.812 -1.31 ...
 ```
 
 

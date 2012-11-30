@@ -10,6 +10,9 @@ highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : []            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
+github      :
+              author  : ryanhope
+              repo    : plotting-in-r
 ---
 
 ## Graphics Frameworks
