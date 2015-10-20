@@ -5,12 +5,13 @@ author      : Ryan Hope
 job         : CogWorks Lab, Rensselaer Polytechnic Institute
 biglogo     : rpi_logo.png
 logo        : cogworks_logo.png
-framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight.js  # {highlight.js, prettify, highlight}
-hitheme     : tomorrow      # 
-widgets     : []            # {mathjax, quiz, bootstrap}
-mode        : selfcontained # {standalone, draft}
-github      :
+framework   : io2012
+highlighter : highlight.js
+hitheme     : tomorrow
+widgets     : []
+mode        : selfcontained
+knit        : slidify::knit2slides
+github      : 
               author  : ryanhope
               repo    : plotting-in-r
 ---
@@ -26,7 +27,6 @@ github      :
 
 ### ggplot2
 - Based on the grammar of graphics, which tries to take the good parts of base and lattice graphics and none of the bad parts
-
 
 
 
@@ -47,26 +47,24 @@ github      :
 source("https://raw.github.com/RyanHope/plotting-in-r/gh-pages/data.R")
 ```
 
-
 ---
 
 ## Test Data 1 - Long Format
 
 
 ```r
-x <- seq(-pi, pi, length.out = 100)
-y <- c(sin(x), cos(x)) + rnorm(200, sd = 0.25)
-d1 <- data.frame(y = y, x = rep(x, 2), type = rep(c("sin", "cos"), each = length(x)))
+x <- seq(-pi,pi,length.out=100)
+y <- c(sin(x),cos(x)) + rnorm(200,sd=.25)
+d1 <- data.frame(y=y,x=rep(x,2),type=rep(c("sin","cos"),each=length(x)))
 str(d1)
 ```
 
 ```
 ## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  0.335 -0.262 -0.4 -0.3 0.171 ...
+##  $ y   : num  0.257 -0.186 -0.494 -0.438 -0.773 ...
 ##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
 ##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
 ```
-
 
 ---
 
@@ -74,17 +72,16 @@ str(d1)
 
 
 ```r
-d2 <- data.frame(reshape(d1, timevar = "type", idvar = c("x"), direction = "wide"))
+d2 <- data.frame(reshape(d1, timevar="type", idvar=c("x"), direction="wide"))
 str(d2)
 ```
 
 ```
 ## 'data.frame':	100 obs. of  3 variables:
 ##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ y.sin: num  0.335 -0.262 -0.4 -0.3 0.171 ...
-##  $ y.cos: num  -0.97 -0.865 -0.57 -0.812 -1.31 ...
+##  $ y.sin: num  0.257 -0.186 -0.494 -0.438 -0.773 ...
+##  $ y.cos: num  -0.69 -0.898 -1.232 -0.866 -0.797 ...
 ```
-
 
 ---
 
@@ -99,7 +96,6 @@ d3 <- data.frame(
   g=rep(1:2,each=500))
 ```
 
-
 ---
 
 ## Test Data 4
@@ -109,10 +105,9 @@ d3 <- data.frame(
 x <- seq(pi/4, 5 * pi, length.out = 100)
 y <- seq(pi/4, 5 * pi, length.out = 100)
 r <- as.vector(sqrt(outer(x^2, y^2, "+")))
-d4 <- expand.grid(x = x, y = y)
+d4 <- expand.grid(x=x, y=y)
 d4$z <- cos(r^2) * exp(-r/(pi^3))
 ```
-
 
 --- &twocol
 
@@ -120,11 +115,12 @@ d4$z <- cos(r^2) * exp(-r/(pi^3))
 
 
 ```r
-install.packages("lattice", dependencies = TRUE)
+install.packages('lattice', dependencies = TRUE)
 ```
 
 
-*** left
+
+*** =left
 
 **Univariate**:
 - <span style="color:blue;">barchart</span>: Bar plots
@@ -135,7 +131,7 @@ install.packages("lattice", dependencies = TRUE)
 - <span style="color:blue;">qqmath</span>: Theretical quantile plots
 - <span style="color:blue;">stripplot</span>: One-dimensional scatterplots
 
-*** right
+*** =right
 
 **Bivariate**:
 - <span style="color:blue;">qq</span>: Quantile plots
@@ -151,41 +147,37 @@ install.packages("lattice", dependencies = TRUE)
 
 ## Lattice - histogram
 
-*** left
+*** =left
 
 
 ```r
-histogram(~y, d3)
+histogram(~y,d3)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
-
+![plot of chunk unnamed-chunk-10](assets/fig/unnamed-chunk-10-1.png) 
 
 --- &twocol
 
 ## Lattice - histogram w/ conditioning factor
 
-*** left
+*** =left
 
 
 ```r
-histogram(~y | as.factor(g), d3)
+histogram(~y|as.factor(g),d3)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
-
+![plot of chunk unnamed-chunk-12](assets/fig/unnamed-chunk-12-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart
 
-*** left
+*** =left
 
 
 ```r
@@ -193,17 +185,15 @@ barchart(y ~ as.factor(x),
   aggregate(y ~ x, data = d3, mean))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
-
+![plot of chunk unnamed-chunk-14](assets/fig/unnamed-chunk-14-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ conditioning factor
 
-*** left
+*** =left
 
 
 ```r
@@ -211,17 +201,15 @@ barchart(y ~ as.factor(x) | as.factor(g),
   aggregate(y ~ x + g, data = d3, mean))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png) 
-
+![plot of chunk unnamed-chunk-16](assets/fig/unnamed-chunk-16-1.png) 
 
 --- &twocol
 
 ## Lattice - condition barchart w/ free scales
 
-*** left
+*** =left
 
 
 ```r
@@ -230,17 +218,15 @@ barchart(y ~ as.factor(x) | as.factor(g),
   scales=list(y=list(relation="free")))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17.png) 
-
+![plot of chunk unnamed-chunk-18](assets/fig/unnamed-chunk-18-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ grouping factor
 
-*** left
+*** =left
 
 
 ```r
@@ -249,17 +235,15 @@ barchart(y ~ as.factor(x),
   groups = as.factor(g))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19.png) 
-
+![plot of chunk unnamed-chunk-20](assets/fig/unnamed-chunk-20-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ auto.key
 
-*** left
+*** =left
 
 
 ```r
@@ -269,17 +253,15 @@ barchart(y ~ as.factor(x),
   auto.key = T)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21.png) 
-
+![plot of chunk unnamed-chunk-22](assets/fig/unnamed-chunk-22-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ auto.key
 
-*** left
+*** =left
 
 
 ```r
@@ -289,17 +271,15 @@ barchart(y ~ as.factor(x),
   auto.key = list(columns = 2))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23.png) 
-
+![plot of chunk unnamed-chunk-24](assets/fig/unnamed-chunk-24-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ auto.key
 
-*** left
+*** =left
 
 
 ```r
@@ -309,51 +289,45 @@ barchart(y ~ as.factor(x),
   auto.key = list(space = "right"))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25.png) 
-
+![plot of chunk unnamed-chunk-26](assets/fig/unnamed-chunk-26-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot
 
-*** left
+*** =left
 
 
 ```r
-xyplot(y ~ x, d1)
+xyplot(y~x,d1)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27.png) 
-
+![plot of chunk unnamed-chunk-28](assets/fig/unnamed-chunk-28-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot w/ conditioning factor
 
-*** left
+*** =left
 
 
 ```r
-xyplot(y ~ x | type, d1)
+xyplot(y~x|type,d1)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29.png) 
-
+![plot of chunk unnamed-chunk-30](assets/fig/unnamed-chunk-30-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot w/ grouping factor
 
-*** left
+*** =left
 
 
 ```r
@@ -361,17 +335,15 @@ xyplot(y ~ x, d1, groups = type,
   auto.key = list(space = "right"))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31.png) 
-
+![plot of chunk unnamed-chunk-32](assets/fig/unnamed-chunk-32-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot w/ two y variables
 
-*** left
+*** =left
 
 
 ```r
@@ -379,17 +351,15 @@ xyplot(y.cos + y.sin ~ x, d2,
   auto.key = list(space = "right"))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33.png) 
-
+![plot of chunk unnamed-chunk-34](assets/fig/unnamed-chunk-34-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot - changing plot type
 
-*** left
+*** =left
 
 
 ```r
@@ -398,17 +368,15 @@ xyplot(y ~ x, d1, groups = type,
   type = "l")
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35.png) 
-
+![plot of chunk unnamed-chunk-36](assets/fig/unnamed-chunk-36-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot - changing plot type
 
-*** left
+*** =left
 
 
 ```r
@@ -417,17 +385,15 @@ xyplot(y ~ x, d1, groups = type,
   type = "b")
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37.png) 
-
+![plot of chunk unnamed-chunk-38](assets/fig/unnamed-chunk-38-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot - opther options
 
-*** left
+*** =left
 
 
 ```r
@@ -436,17 +402,15 @@ xyplot(y ~ x, d1, groups = type,
   type = "b", pch=2, cex=.5, lty=2, lwd=2)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39.png) 
-
+![plot of chunk unnamed-chunk-40](assets/fig/unnamed-chunk-40-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot - tick locations
 
-*** left
+*** =left
 
 
 ```r
@@ -456,17 +420,15 @@ xyplot(y ~ x, d1, groups = type,
     at = c(-pi, -pi/2, 0, pi/2, pi))))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41.png) 
-
+![plot of chunk unnamed-chunk-42](assets/fig/unnamed-chunk-42-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot - tick labels
 
-*** left
+*** =left
 
 
 ```r
@@ -479,17 +441,15 @@ xyplot(y ~ x, d1, groups = type,
     )))
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43.png) 
-
+![plot of chunk unnamed-chunk-44](assets/fig/unnamed-chunk-44-1.png) 
 
 --- &twocol
 
 ## Lattice Panels
 
-*** left
+*** =left
 
 
 ```r
@@ -502,17 +462,15 @@ xyplot(y ~ x, d1, groups = type,
 )
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45.png) 
-
+![plot of chunk unnamed-chunk-46](assets/fig/unnamed-chunk-46-1.png) 
 
 --- &twocol
 
 ## Lattice Panels + Smoother
 
-*** left
+*** =left
 
 
 ```r
@@ -527,28 +485,24 @@ xyplot(y ~ x, d1, groups = type,
 )
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47.png) 
-
+![plot of chunk unnamed-chunk-48](assets/fig/unnamed-chunk-48-1.png) 
 
 --- &twocol
 
 ## Lattice - levelplot
 
-*** left
+*** =left
 
 
 ```r
-levelplot(z ~ x + y, d4)
+levelplot(z~x+y,d4)
 ```
 
+*** =right
 
-*** right
-
-![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49.png) 
-
+![plot of chunk unnamed-chunk-50](assets/fig/unnamed-chunk-50-1.png) 
 
 ---
 
@@ -560,7 +514,6 @@ levelplot(z ~ x + y, d4)
 ```r
 help(trellis)
 ```
-
 
 ---
 

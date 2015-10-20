@@ -5,12 +5,13 @@ author      : Ryan Hope
 job         : CogWorks Lab, Rensselaer Polytechnic Institute
 biglogo     : rpi_logo.png
 logo        : cogworks_logo.png
-framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight.js  # {highlight.js, prettify, highlight}
-hitheme     : tomorrow      # 
-widgets     : []            # {mathjax, quiz, bootstrap}
-mode        : selfcontained # {standalone, draft}
-github      :
+framework   : io2012
+highlighter : highlight.js
+hitheme     : tomorrow
+widgets     : []
+mode        : selfcontained
+knit        : slidify::knit2slides
+github      : 
               author  : ryanhope
               repo    : plotting-in-r
 ---
@@ -100,7 +101,11 @@ d4$z <- cos(r^2) * exp(-r/(pi^3))
 install.packages('lattice', dependencies = TRUE)
 ```
 
-*** left
+```{r include=FALSE}
+require(lattice)
+```
+
+*** =left
 
 **Univariate**:
 - <span style="color:blue;">barchart</span>: Bar plots
@@ -111,7 +116,7 @@ install.packages('lattice', dependencies = TRUE)
 - <span style="color:blue;">qqmath</span>: Theretical quantile plots
 - <span style="color:blue;">stripplot</span>: One-dimensional scatterplots
 
-*** right
+*** =right
 
 **Bivariate**:
 - <span style="color:blue;">qq</span>: Quantile plots
@@ -127,46 +132,46 @@ install.packages('lattice', dependencies = TRUE)
 
 ## Lattice - histogram
 
-*** left
+*** =left
 
 ```{r eval=FALSE}
 histogram(~y,d3)
-````
+```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 histogram(~y,d3)
-````
+```
 
 --- &twocol
 
 ## Lattice - histogram w/ conditioning factor
 
-*** left
+*** =left
 
 ```{r eval=FALSE}
 histogram(~y|as.factor(g),d3)
-````
+```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 histogram(~y|as.factor(g),d3)
-````
+```
 
 --- &twocol
 
 ## Lattice - barchart
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
   aggregate(y ~ x, data = d3, mean))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x),
@@ -177,14 +182,14 @@ barchart(y ~ as.factor(x),
 
 ## Lattice - barchart w/ conditioning factor
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x) | as.factor(g),
   aggregate(y ~ x + g, data = d3, mean))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x) | as.factor(g),
@@ -195,7 +200,7 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 ## Lattice - condition barchart w/ free scales
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x) | as.factor(g),
@@ -203,7 +208,7 @@ barchart(y ~ as.factor(x) | as.factor(g),
   scales=list(y=list(relation="free")))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x) | as.factor(g),
@@ -215,7 +220,7 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 ## Lattice - barchart w/ grouping factor
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -223,7 +228,7 @@ barchart(y ~ as.factor(x),
   groups = as.factor(g))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x),
@@ -235,7 +240,7 @@ barchart(y ~ as.factor(x),
 
 ## Lattice - barchart w/ auto.key
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -244,7 +249,7 @@ barchart(y ~ as.factor(x),
   auto.key = T)
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x),
@@ -257,7 +262,7 @@ barchart(y ~ as.factor(x),
 
 ## Lattice - barchart w/ auto.key
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -266,7 +271,7 @@ barchart(y ~ as.factor(x),
   auto.key = list(columns = 2))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x),
@@ -279,7 +284,7 @@ barchart(y ~ as.factor(x),
 
 ## Lattice - barchart w/ auto.key
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -288,7 +293,7 @@ barchart(y ~ as.factor(x),
   auto.key = list(space = "right"))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 barchart(y ~ as.factor(x),
@@ -301,13 +306,13 @@ barchart(y ~ as.factor(x),
 
 ## Lattice - xyplot
 
-*** left
+*** =left
 
 ```{r eval=FALSE}
 xyplot(y~x,d1)
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y~x,d1)
@@ -317,13 +322,13 @@ xyplot(y~x,d1)
 
 ## Lattice - xyplot w/ conditioning factor
 
-*** left
+*** =left
 
 ```{r eval=FALSE}
 xyplot(y~x|type,d1)
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y~x|type,d1)
@@ -333,14 +338,14 @@ xyplot(y~x|type,d1)
 
 ## Lattice - xyplot w/ grouping factor
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
   auto.key = list(space = "right"))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -351,14 +356,14 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - xyplot w/ two y variables
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 xyplot(y.cos + y.sin ~ x, d2,
   auto.key = list(space = "right"))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y.cos + y.sin ~ x, d2,
@@ -369,7 +374,7 @@ xyplot(y.cos + y.sin ~ x, d2,
 
 ## Lattice - xyplot - changing plot type
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
@@ -377,7 +382,7 @@ xyplot(y ~ x, d1, groups = type,
   type = "l")
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -389,7 +394,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - xyplot - changing plot type
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
@@ -397,7 +402,7 @@ xyplot(y ~ x, d1, groups = type,
   type = "b")
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -409,7 +414,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - xyplot - opther options
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
@@ -417,7 +422,7 @@ xyplot(y ~ x, d1, groups = type,
   type = "b", pch=2, cex=.5, lty=2, lwd=2)
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -429,7 +434,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - xyplot - tick locations
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
@@ -438,7 +443,7 @@ xyplot(y ~ x, d1, groups = type,
     at = c(-pi, -pi/2, 0, pi/2, pi))))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -451,7 +456,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - xyplot - tick labels
 
-*** left
+*** =left
 
 ```{r eval=FALSE, tidy=FALSE}
 l <- expression(-pi, -pi/2, 0, pi/2, pi)
@@ -463,7 +468,7 @@ xyplot(y ~ x, d1, groups = type,
     )))
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 l <- expression(-pi, -pi/2, 0, pi/2, pi)
@@ -479,7 +484,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice Panels
 
-*** left
+*** =left
 
 ```{r eval=F, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
@@ -491,7 +496,7 @@ xyplot(y ~ x, d1, groups = type,
 )
 ```
 
-*** right
+*** =right
 
 ```{r echo=F, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -507,7 +512,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice Panels + Smoother
 
-*** left
+*** =left
 
 ```{r eval=F, tidy=FALSE}
 xyplot(y ~ x, d1, groups = type,
@@ -521,7 +526,7 @@ xyplot(y ~ x, d1, groups = type,
 )
 ```
 
-*** right
+*** =right
 
 ```{r echo=F, fig.height=6}
 xyplot(y ~ x, d1, groups = type,
@@ -539,13 +544,13 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - levelplot
 
-*** left
+*** =left
 
 ```{r eval=FALSE}
 levelplot(z~x+y,d4)
 ```
 
-*** right
+*** =right
 
 ```{r echo=FALSE, fig.height=6}
 levelplot(z~x+y,d4)
