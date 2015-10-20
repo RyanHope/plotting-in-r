@@ -8,7 +8,7 @@ logo        : cogworks_logo.png
 framework   : io2012
 highlighter : highlight.js
 hitheme     : tomorrow
-widgets     : []
+widgets     : [mathjax]
 mode        : selfcontained
 knit        : slidify::knit2slides
 github      : 
@@ -47,40 +47,84 @@ github      :
 source("https://raw.github.com/RyanHope/plotting-in-r/gh-pages/data.R")
 ```
 
----
+--- &twocol
 
-## Test Data 1 - Long Format
+## Test Data 1 - Wide Format
+
+wide = efficient storage but hard to work with
+
+*** =left
 
 
 ```r
 x <- seq(-pi,pi,length.out=100)
-y <- c(sin(x),cos(x)) + rnorm(200,sd=.25)
-d1 <- data.frame(y=y,x=rep(x,2),type=rep(c("sin","cos"),each=length(x)))
-str(d1)
+y.sin <- sin(x) + rnorm(100,sd=.25)
+y.cos <- cos(x) + rnorm(100,sd=.25)
+d1 <- data.frame(
+  x=x,
+  y.sin=y.sin,
+  y.cos=y.cos
+)
 ```
 
-```
-## 'data.frame':	200 obs. of  3 variables:
-##  $ y   : num  0.257 -0.186 -0.494 -0.438 -0.773 ...
-##  $ x   : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ type: Factor w/ 2 levels "cos","sin": 2 2 2 2 2 2 2 2 2 2 ...
-```
-
----
-
-## Test Data 2 - Wide Format
+*** =right
 
 
 ```r
-d2 <- data.frame(reshape(d1, timevar="type", idvar=c("x"), direction="wide"))
-str(d2)
+head(d1)
 ```
 
 ```
-## 'data.frame':	100 obs. of  3 variables:
-##  $ x    : num  -3.14 -3.08 -3.01 -2.95 -2.89 ...
-##  $ y.sin: num  0.257 -0.186 -0.494 -0.438 -0.773 ...
-##  $ y.cos: num  -0.69 -0.898 -1.232 -0.866 -0.797 ...
+##           x       y.sin      y.cos
+## 1 -3.141593 -0.06350776 -1.2853265
+## 2 -3.078126 -0.32124640 -1.2566857
+## 3 -3.014660  0.04408846 -1.2284733
+## 4 -2.951193 -0.52043548 -1.2873943
+## 5 -2.887727 -0.40772922 -0.6982391
+## 6 -2.824260 -0.24090673 -1.1172758
+```
+
+--- &twocol
+
+## Test Data 2 - Long Format
+
+long = inefficient storage but easy to work with
+
+
+
+```r
+install.packages('reshape2', dependencies = TRUE)
+```
+
+*** =left
+
+
+
+
+```r
+d2 <- melt(
+  d1,
+  id.vars=c("x"), 
+  variable.name="type", 
+  value.name="y"
+)
+```
+
+*** =right
+
+
+```r
+head(d2)
+```
+
+```
+##           x  type           y
+## 1 -3.141593 y.sin -0.06350776
+## 2 -3.078126 y.sin -0.32124640
+## 3 -3.014660 y.sin  0.04408846
+## 4 -2.951193 y.sin -0.52043548
+## 5 -2.887727 y.sin -0.40772922
+## 6 -2.824260 y.sin -0.24090673
 ```
 
 ---
@@ -94,19 +138,17 @@ d3 <- data.frame(
   y=c(unlist(lapply(1:5, function(x){rnorm(n=100,mean=2^x)})),
       unlist(lapply(1:5, function(x){rnorm(n=100,mean=50+2^x)}))),
   g=rep(1:2,each=500))
+head(d3)
 ```
 
----
-
-## Test Data 4
-
-
-```r
-x <- seq(pi/4, 5 * pi, length.out = 100)
-y <- seq(pi/4, 5 * pi, length.out = 100)
-r <- as.vector(sqrt(outer(x^2, y^2, "+")))
-d4 <- expand.grid(x=x, y=y)
-d4$z <- cos(r^2) * exp(-r/(pi^3))
+```
+##   x        y g
+## 1 1 2.715525 1
+## 2 1 2.047138 1
+## 3 1 1.527172 1
+## 4 1 2.242786 1
+## 5 1 2.301681 1
+## 6 1 3.932747 1
 ```
 
 --- &twocol
@@ -149,6 +191,12 @@ install.packages('lattice', dependencies = TRUE)
 
 *** =left
 
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
 
 ```r
 histogram(~y,d3)
@@ -156,13 +204,19 @@ histogram(~y,d3)
 
 *** =right
 
-![plot of chunk unnamed-chunk-10](assets/fig/unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-13](assets/fig/unnamed-chunk-13-1.png) 
 
 --- &twocol
 
 ## Lattice - histogram w/ conditioning factor
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -171,13 +225,19 @@ histogram(~y|as.factor(g),d3)
 
 *** =right
 
-![plot of chunk unnamed-chunk-12](assets/fig/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-15](assets/fig/unnamed-chunk-15-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -187,13 +247,19 @@ barchart(y ~ as.factor(x),
 
 *** =right
 
-![plot of chunk unnamed-chunk-14](assets/fig/unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-17](assets/fig/unnamed-chunk-17-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ conditioning factor
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -203,13 +269,19 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 *** =right
 
-![plot of chunk unnamed-chunk-16](assets/fig/unnamed-chunk-16-1.png) 
+![plot of chunk unnamed-chunk-19](assets/fig/unnamed-chunk-19-1.png) 
 
 --- &twocol
 
 ## Lattice - condition barchart w/ free scales
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -220,13 +292,19 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 *** =right
 
-![plot of chunk unnamed-chunk-18](assets/fig/unnamed-chunk-18-1.png) 
+![plot of chunk unnamed-chunk-21](assets/fig/unnamed-chunk-21-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ grouping factor
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -237,13 +315,19 @@ barchart(y ~ as.factor(x),
 
 *** =right
 
-![plot of chunk unnamed-chunk-20](assets/fig/unnamed-chunk-20-1.png) 
+![plot of chunk unnamed-chunk-23](assets/fig/unnamed-chunk-23-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ auto.key
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -255,13 +339,19 @@ barchart(y ~ as.factor(x),
 
 *** =right
 
-![plot of chunk unnamed-chunk-22](assets/fig/unnamed-chunk-22-1.png) 
+![plot of chunk unnamed-chunk-25](assets/fig/unnamed-chunk-25-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ auto.key
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -273,13 +363,19 @@ barchart(y ~ as.factor(x),
 
 *** =right
 
-![plot of chunk unnamed-chunk-24](assets/fig/unnamed-chunk-24-1.png) 
+![plot of chunk unnamed-chunk-27](assets/fig/unnamed-chunk-27-1.png) 
 
 --- &twocol
 
 ## Lattice - barchart w/ auto.key
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 
 ```r
@@ -291,7 +387,7 @@ barchart(y ~ as.factor(x),
 
 *** =right
 
-![plot of chunk unnamed-chunk-26](assets/fig/unnamed-chunk-26-1.png) 
+![plot of chunk unnamed-chunk-29](assets/fig/unnamed-chunk-29-1.png) 
 
 --- &twocol
 
@@ -299,61 +395,91 @@ barchart(y ~ as.factor(x),
 
 *** =left
 
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
 
 ```r
-xyplot(y~x,d1)
+xyplot(y~x,d2)
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-28](assets/fig/unnamed-chunk-28-1.png) 
+![plot of chunk unnamed-chunk-31](assets/fig/unnamed-chunk-31-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot w/ conditioning factor
 
+REQUIRES LONG FORMAT
+
 *** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
 
 
 ```r
-xyplot(y~x|type,d1)
+xyplot(y~x|type,d2)
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-30](assets/fig/unnamed-chunk-30-1.png) 
+![plot of chunk unnamed-chunk-33](assets/fig/unnamed-chunk-33-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot w/ grouping factor
 
+REQUIRES LONG FORMAT
+
 *** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"))
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-32](assets/fig/unnamed-chunk-32-1.png) 
+![plot of chunk unnamed-chunk-35](assets/fig/unnamed-chunk-35-1.png) 
 
 --- &twocol
 
 ## Lattice - xyplot w/ two y variables
 
+REQUIRES WIDE FORMAT
+
 *** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
 
 
 ```r
-xyplot(y.cos + y.sin ~ x, d2,
+xyplot(y.cos + y.sin ~ x, d1,
   auto.key = list(space = "right"))
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-34](assets/fig/unnamed-chunk-34-1.png) 
+![plot of chunk unnamed-chunk-37](assets/fig/unnamed-chunk-37-1.png) 
 
 --- &twocol
 
@@ -363,14 +489,14 @@ xyplot(y.cos + y.sin ~ x, d2,
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "l")
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-36](assets/fig/unnamed-chunk-36-1.png) 
+![plot of chunk unnamed-chunk-39](assets/fig/unnamed-chunk-39-1.png) 
 
 --- &twocol
 
@@ -380,14 +506,14 @@ xyplot(y ~ x, d1, groups = type,
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b")
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-38](assets/fig/unnamed-chunk-38-1.png) 
+![plot of chunk unnamed-chunk-41](assets/fig/unnamed-chunk-41-1.png) 
 
 --- &twocol
 
@@ -397,14 +523,14 @@ xyplot(y ~ x, d1, groups = type,
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b", pch=2, cex=.5, lty=2, lwd=2)
 ```
 
 *** =right
 
-![plot of chunk unnamed-chunk-40](assets/fig/unnamed-chunk-40-1.png) 
+![plot of chunk unnamed-chunk-43](assets/fig/unnamed-chunk-43-1.png) 
 
 --- &twocol
 
@@ -414,7 +540,7 @@ xyplot(y ~ x, d1, groups = type,
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   scales = list(x = list(
     at = c(-pi, -pi/2, 0, pi/2, pi))))
@@ -422,7 +548,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** =right
 
-![plot of chunk unnamed-chunk-42](assets/fig/unnamed-chunk-42-1.png) 
+![plot of chunk unnamed-chunk-45](assets/fig/unnamed-chunk-45-1.png) 
 
 --- &twocol
 
@@ -433,7 +559,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ```r
 l <- expression(-pi, -pi/2, 0, pi/2, pi)
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   scales = list(x = list(
     at = c(-pi, -pi/2, 0, pi/2, pi),
@@ -443,7 +569,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** =right
 
-![plot of chunk unnamed-chunk-44](assets/fig/unnamed-chunk-44-1.png) 
+![plot of chunk unnamed-chunk-47](assets/fig/unnamed-chunk-47-1.png) 
 
 --- &twocol
 
@@ -453,7 +579,7 @@ xyplot(y ~ x, d1, groups = type,
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b",
   panel=function(...) {
@@ -464,7 +590,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** =right
 
-![plot of chunk unnamed-chunk-46](assets/fig/unnamed-chunk-46-1.png) 
+![plot of chunk unnamed-chunk-49](assets/fig/unnamed-chunk-49-1.png) 
 
 --- &twocol
 
@@ -474,7 +600,7 @@ xyplot(y ~ x, d1, groups = type,
 
 
 ```r
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "p",
   panel = panel.superpose,
@@ -487,22 +613,7 @@ xyplot(y ~ x, d1, groups = type,
 
 *** =right
 
-![plot of chunk unnamed-chunk-48](assets/fig/unnamed-chunk-48-1.png) 
-
---- &twocol
-
-## Lattice - levelplot
-
-*** =left
-
-
-```r
-levelplot(z~x+y,d4)
-```
-
-*** =right
-
-![plot of chunk unnamed-chunk-50](assets/fig/unnamed-chunk-50-1.png) 
+![plot of chunk unnamed-chunk-51](assets/fig/unnamed-chunk-51-1.png) 
 
 ---
 
@@ -522,5 +633,310 @@ help(trellis)
 ### Great documentation and examples available online
 
 - http://docs.ggplot2.org/current
-- http://www.ceb-institute.org/bbs/wp-content/uploads/2011/09/handout_ggplot2.pdf
-- http://wiki.stdout.org/rcookbook/Graphs
+- http://www.cookbook-r.com/Graphs/
+
+
+```r
+install.packages('ggplot2', dependencies = TRUE)
+```
+
+
+
+---
+
+## ggplot2 basics
+
+- Geoms
+ - short for geometric objects, describe the type of plot you will produce
+- Statistics
+ - transform your data before plotting
+- Scales
+ - control the mapping between data and aesthetics
+- Coordinate systems
+ - adjust the mapping from coordinates to the 2d plane of the computer screen
+- Faceting
+ - display subsets of the dataset in different panels
+
+--- &twocol
+
+## ggplot2 - histogram
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(d3) + 
+  geom_histogram(aes(x=y))
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-56](assets/fig/unnamed-chunk-56-1.png) 
+
+--- &twocol
+
+## ggplot2 - histogram w/ facets
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(d3) +
+  geom_histogram(aes(x=y)) +
+  facet_grid(.~g)
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-58](assets/fig/unnamed-chunk-58-1.png) 
+
+--- &twocol
+
+## ggplot2 - barchart
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(aggregate(y ~ x, data = d3, mean)) + 
+  geom_bar(aes(x=factor(x), y=y), stat="identity")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-60](assets/fig/unnamed-chunk-60-1.png) 
+
+--- &twocol
+
+## ggplot2 - barchart w/ facets
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y),
+             stat="identity") +
+    facet_wrap(~g)
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-62](assets/fig/unnamed-chunk-62-1.png) 
+
+--- &twocol
+
+## ggplot2 - barchart w/ facets + free scales
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y),
+             stat="identity") +
+    facet_wrap(~g, scales="free_y")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-64](assets/fig/unnamed-chunk-64-1.png) 
+
+--- &twocol
+
+## ggplot2 - barchart w/ grouping factor stacked
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y,
+                 group=factor(g),
+                 fill=factor(g)),
+             stat="identity")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-66](assets/fig/unnamed-chunk-66-1.png) 
+
+--- &twocol
+
+## ggplot2 - barchart w/ grouping factor dodge
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+
+```r
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y,
+                 group=factor(g),
+                 fill=factor(g)),
+             stat="identity",
+             position="dodge")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-68](assets/fig/unnamed-chunk-68-1.png) 
+
+--- &twocol
+
+## ggplot2 - scatter plot
+
+LONG FORMAT
+
+*** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+
+```r
+ggplot(d1) +
+  geom_point(aes(x=x,y=y.sin),color="red") + 
+  geom_point(aes(x=x,y=y.cos),color="blue")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-70](assets/fig/unnamed-chunk-70-1.png) 
+
+--- &twocol
+
+## ggplot2 - scatter plot w/ groups + smoother
+
+LONG FORMAT
+
+*** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+
+```r
+ggplot(d2, aes(x=x,y=y,group=type,color=type)) + 
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="loess")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-72](assets/fig/unnamed-chunk-72-1.png) 
+
+--- &twocol
+
+## ggplot2 - scatter plot w/ facets + smoother
+
+LONG FORMAT
+
+*** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+
+```r
+ggplot(d2, aes(x=x,y=y,color=type)) + 
+  geom_point() +
+  geom_line() +
+  facet_grid(type~.) + 
+  stat_smooth(method="loess")
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-74](assets/fig/unnamed-chunk-74-1.png) 
+
+--- &twocol
+
+## ggplot2 - scatter plot w/ facets + smoother + scales
+
+
+```r
+install.packages('scales', dependencies = TRUE)
+```
+
+*** =left
+
+
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+
+```r
+pi_scales <- math_format(.x * pi, 
+                         format=function(x) x / pi)
+ggplot(d2, aes(x=x,y=y,color=type)) + 
+  geom_point() +
+  geom_line() +
+  facet_grid(type~.) + 
+  stat_smooth(method="loess") +
+  scale_x_continuous(labels=pi_scales,
+                     breaks=seq(-pi,pi,pi/4))
+```
+
+*** =right
+
+![plot of chunk unnamed-chunk-78](assets/fig/unnamed-chunk-78-1.png) 

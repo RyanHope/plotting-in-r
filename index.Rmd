@@ -8,7 +8,7 @@ logo        : cogworks_logo.png
 framework   : io2012
 highlighter : highlight.js
 hitheme     : tomorrow
-widgets     : []
+widgets     : [mathjax]
 mode        : selfcontained
 knit        : slidify::knit2slides
 github      : 
@@ -49,24 +49,61 @@ require(ggplot2)
 source("https://raw.github.com/RyanHope/plotting-in-r/gh-pages/data.R")
 ```
 
----
+--- &twocol
 
-## Test Data 1 - Long Format
+## Test Data 1 - Wide Format
+
+wide = efficient storage but hard to work with
+
+*** =left
 
 ```{r}
 x <- seq(-pi,pi,length.out=100)
-y <- c(sin(x),cos(x)) + rnorm(200,sd=.25)
-d1 <- data.frame(y=y,x=rep(x,2),type=rep(c("sin","cos"),each=length(x)))
-str(d1)
+y.sin <- sin(x) + rnorm(100,sd=.25)
+y.cos <- cos(x) + rnorm(100,sd=.25)
+d1 <- data.frame(
+  x=x,
+  y.sin=y.sin,
+  y.cos=y.cos
+)
 ```
 
----
-
-## Test Data 2 - Wide Format
+*** =right
 
 ```{r}
-d2 <- data.frame(reshape(d1, timevar="type", idvar=c("x"), direction="wide"))
-str(d2)
+head(d1)
+```
+
+--- &twocol
+
+## Test Data 2 - Long Format
+
+long = inefficient storage but easy to work with
+
+
+```{r eval=FALSE}
+install.packages('reshape2', dependencies = TRUE)
+```
+
+*** =left
+
+```{r include=FALSE}
+require(reshape2)
+```
+
+```{r}
+d2 <- melt(
+  d1,
+  id.vars=c("x"), 
+  variable.name="type", 
+  value.name="y"
+)
+```
+
+*** =right
+
+```{r}
+head(d2)
 ```
 
 ---
@@ -79,18 +116,7 @@ d3 <- data.frame(
   y=c(unlist(lapply(1:5, function(x){rnorm(n=100,mean=2^x)})),
       unlist(lapply(1:5, function(x){rnorm(n=100,mean=50+2^x)}))),
   g=rep(1:2,each=500))
-```
-
----
-
-## Test Data 4
-
-```{r}
-x <- seq(pi/4, 5 * pi, length.out = 100)
-y <- seq(pi/4, 5 * pi, length.out = 100)
-r <- as.vector(sqrt(outer(x^2, y^2, "+")))
-d4 <- expand.grid(x=x, y=y)
-d4$z <- cos(r^2) * exp(-r/(pi^3))
+head(d3)
 ```
 
 --- &twocol
@@ -134,6 +160,12 @@ require(lattice)
 
 *** =left
 
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
 ```{r eval=FALSE}
 histogram(~y,d3)
 ```
@@ -150,6 +182,12 @@ histogram(~y,d3)
 
 *** =left
 
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
 ```{r eval=FALSE}
 histogram(~y|as.factor(g),d3)
 ```
@@ -165,6 +203,12 @@ histogram(~y|as.factor(g),d3)
 ## Lattice - barchart
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -184,6 +228,12 @@ barchart(y ~ as.factor(x),
 
 *** =left
 
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x) | as.factor(g),
   aggregate(y ~ x + g, data = d3, mean))
@@ -201,6 +251,12 @@ barchart(y ~ as.factor(x) | as.factor(g),
 ## Lattice - condition barchart w/ free scales
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x) | as.factor(g),
@@ -222,6 +278,12 @@ barchart(y ~ as.factor(x) | as.factor(g),
 
 *** =left
 
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
   aggregate(y ~ x + g, data = d3, mean),
@@ -241,6 +303,12 @@ barchart(y ~ as.factor(x),
 ## Lattice - barchart w/ auto.key
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -264,6 +332,12 @@ barchart(y ~ as.factor(x),
 
 *** =left
 
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
   aggregate(y ~ x + g, data = d3, mean),
@@ -285,6 +359,12 @@ barchart(y ~ as.factor(x),
 ## Lattice - barchart w/ auto.key
 
 *** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
 
 ```{r eval=FALSE, tidy=FALSE}
 barchart(y ~ as.factor(x),
@@ -308,47 +388,69 @@ barchart(y ~ as.factor(x),
 
 *** =left
 
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
 ```{r eval=FALSE}
-xyplot(y~x,d1)
+xyplot(y~x,d2)
 ```
 
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y~x,d1)
+xyplot(y~x,d2)
 ```
 
 --- &twocol
 
 ## Lattice - xyplot w/ conditioning factor
 
+REQUIRES LONG FORMAT
+
 *** =left
 
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
 ```{r eval=FALSE}
-xyplot(y~x|type,d1)
+xyplot(y~x|type,d2)
 ```
 
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y~x|type,d1)
+xyplot(y~x|type,d2)
 ```
 
 --- &twocol
 
 ## Lattice - xyplot w/ grouping factor
 
+REQUIRES LONG FORMAT
+
 *** =left
 
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
 ```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"))
 ```
 
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"))
 ```
 
@@ -356,17 +458,25 @@ xyplot(y ~ x, d1, groups = type,
 
 ## Lattice - xyplot w/ two y variables
 
+REQUIRES WIDE FORMAT
+
 *** =left
 
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
 ```{r eval=FALSE, tidy=FALSE}
-xyplot(y.cos + y.sin ~ x, d2,
+xyplot(y.cos + y.sin ~ x, d1,
   auto.key = list(space = "right"))
 ```
 
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y.cos + y.sin ~ x, d2,
+xyplot(y.cos + y.sin ~ x, d1,
   auto.key = list(space = "right"))
 ```
 
@@ -377,7 +487,7 @@ xyplot(y.cos + y.sin ~ x, d2,
 *** =left
 
 ```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "l")
 ```
@@ -385,7 +495,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "l")
 ```
@@ -397,7 +507,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =left
 
 ```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b")
 ```
@@ -405,7 +515,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b")
 ```
@@ -417,7 +527,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =left
 
 ```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b", pch=2, cex=.5, lty=2, lwd=2)
 ```
@@ -425,7 +535,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b", pch=2, cex=.5, lty=2, lwd=2)
 ```
@@ -437,7 +547,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =left
 
 ```{r eval=FALSE, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   scales = list(x = list(
     at = c(-pi, -pi/2, 0, pi/2, pi))))
@@ -446,7 +556,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =right
 
 ```{r echo=FALSE, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   scales = list(x = list(
     at = c(-pi, -pi/2, 0, pi/2, pi))))
@@ -460,7 +570,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ```{r eval=FALSE, tidy=FALSE}
 l <- expression(-pi, -pi/2, 0, pi/2, pi)
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   scales = list(x = list(
     at = c(-pi, -pi/2, 0, pi/2, pi),
@@ -472,7 +582,7 @@ xyplot(y ~ x, d1, groups = type,
 
 ```{r echo=FALSE, fig.height=6}
 l <- expression(-pi, -pi/2, 0, pi/2, pi)
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   scales = list(x = list(
     at = c(-pi, -pi/2, 0, pi/2, pi),
@@ -487,7 +597,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =left
 
 ```{r eval=F, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b",
   panel=function(...) {
@@ -499,7 +609,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =right
 
 ```{r echo=F, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "b",
   panel=function(...) {
@@ -515,7 +625,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =left
 
 ```{r eval=F, tidy=FALSE}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "p",
   panel = panel.superpose,
@@ -529,7 +639,7 @@ xyplot(y ~ x, d1, groups = type,
 *** =right
 
 ```{r echo=F, fig.height=6}
-xyplot(y ~ x, d1, groups = type,
+xyplot(y ~ x, d2, groups = type,
   auto.key = list(space = "right"),
   type = "p",
   panel = panel.superpose,
@@ -538,22 +648,6 @@ xyplot(y ~ x, d1, groups = type,
     panel.loess(..., span = .2, lwd = 4)
   }
 )
-```
-
---- &twocol
-
-## Lattice - levelplot
-
-*** =left
-
-```{r eval=FALSE}
-levelplot(z~x+y,d4)
-```
-
-*** =right
-
-```{r echo=FALSE, fig.height=6}
-levelplot(z~x+y,d4)
 ```
 
 ---
@@ -573,5 +667,363 @@ help(trellis)
 ### Great documentation and examples available online
 
 - http://docs.ggplot2.org/current
-- http://www.ceb-institute.org/bbs/wp-content/uploads/2011/09/handout_ggplot2.pdf
-- http://wiki.stdout.org/rcookbook/Graphs
+- http://www.cookbook-r.com/Graphs/
+
+```{r eval=FALSE}
+install.packages('ggplot2', dependencies = TRUE)
+```
+
+```{r include=FALSE}
+require(ggplot2)
+```
+
+---
+
+## ggplot2 basics
+
+- Geoms
+ - short for geometric objects, describe the type of plot you will produce
+- Statistics
+ - transform your data before plotting
+- Scales
+ - control the mapping between data and aesthetics
+- Coordinate systems
+ - adjust the mapping from coordinates to the 2d plane of the computer screen
+- Faceting
+ - display subsets of the dataset in different panels
+
+--- &twocol
+
+## ggplot2 - histogram
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE}
+ggplot(d3) + 
+  geom_histogram(aes(x=y))
+```
+
+*** =right
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6}
+ggplot(d3) +
+  geom_histogram(aes(x=y))
+```
+
+--- &twocol
+
+## ggplot2 - histogram w/ facets
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE}
+ggplot(d3) +
+  geom_histogram(aes(x=y)) +
+  facet_grid(.~g)
+```
+
+*** =right
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6}
+ggplot(d3) +
+  geom_histogram(aes(x=y)) +
+  facet_grid(.~g)
+```
+
+--- &twocol
+
+## ggplot2 - barchart
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(aggregate(y ~ x, data = d3, mean)) + 
+  geom_bar(aes(x=factor(x), y=y), stat="identity")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(aggregate(y ~ x, data = d3, mean)) + 
+  geom_bar(aes(x=factor(x), y=y), stat="identity")
+```
+
+--- &twocol
+
+## ggplot2 - barchart w/ facets
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y),
+             stat="identity") +
+    facet_wrap(~g)
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y),
+             stat="identity") +
+    facet_wrap(~g)
+```
+
+--- &twocol
+
+## ggplot2 - barchart w/ facets + free scales
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y),
+             stat="identity") +
+    facet_wrap(~g, scales="free_y")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y),
+             stat="identity") +
+    facet_wrap(~g, scales="free_y")
+```
+
+--- &twocol
+
+## ggplot2 - barchart w/ grouping factor stacked
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y,
+                 group=factor(g),
+                 fill=factor(g)),
+             stat="identity")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y,
+                 group=factor(g),
+                 fill=factor(g)),
+             stat="identity")
+```
+
+--- &twocol
+
+## ggplot2 - barchart w/ grouping factor dodge
+
+*** =left
+
+$$
+x(1:5)|100 \\
+y(g=1)=x^2 \\
+y(g=2)=50+x^2
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y,
+                 group=factor(g),
+                 fill=factor(g)),
+             stat="identity",
+             position="dodge")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(aggregate(y ~ x + g, data = d3, mean)) + 
+    geom_bar(aes(x=factor(x),
+                 y=y,
+                 group=factor(g),
+                 fill=factor(g)),
+             stat="identity",
+             position="dodge")
+```
+
+--- &twocol
+
+## ggplot2 - scatter plot
+
+LONG FORMAT
+
+*** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(d1) +
+  geom_point(aes(x=x,y=y.sin),color="red") + 
+  geom_point(aes(x=x,y=y.cos),color="blue")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(d1) +
+  geom_point(aes(x=x,y=y.sin),color="red") + 
+  geom_point(aes(x=x,y=y.cos),color="blue")
+```
+
+--- &twocol
+
+## ggplot2 - scatter plot w/ groups + smoother
+
+LONG FORMAT
+
+*** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(d2, aes(x=x,y=y,group=type,color=type)) + 
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="loess")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(d2, aes(x=x,y=y,group=type,color=type)) + 
+  geom_point() +
+  geom_line() +
+  stat_smooth(method="loess")
+```
+
+--- &twocol
+
+## ggplot2 - scatter plot w/ facets + smoother
+
+LONG FORMAT
+
+*** =left
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(d2, aes(x=x,y=y,color=type)) + 
+  geom_point() +
+  geom_line() +
+  facet_grid(type~.) + 
+  stat_smooth(method="loess")
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+ggplot(d2, aes(x=x,y=y,color=type)) + 
+  geom_point() +
+  geom_line() +
+  facet_grid(type~.) + 
+  stat_smooth(method="loess")
+```
+
+--- &twocol
+
+## ggplot2 - scatter plot w/ facets + smoother + scales
+
+```{r eval=FALSE}
+install.packages('scales', dependencies = TRUE)
+```
+
+*** =left
+
+```{r include=FALSE}
+require(scales)
+```
+
+$$
+x(-pi:pi)|100 \\
+y(type=sin)=sin(x)+\epsilon \\
+y(type=cos)=cos(x)+\epsilon
+$$
+
+```{r eval=FALSE, tidy=FALSE}
+pi_scales <- math_format(.x * pi, 
+                         format=function(x) x / pi)
+ggplot(d2, aes(x=x,y=y,color=type)) + 
+  geom_point() +
+  geom_line() +
+  facet_grid(type~.) + 
+  stat_smooth(method="loess") +
+  scale_x_continuous(labels=pi_scales,
+                     breaks=seq(-pi,pi,pi/4))
+```
+
+*** =right
+
+```{r echo=FALSE, fig.height=6}
+pi_scales <- math_format(.x * pi,
+                         format=function(x) x / pi)
+ggplot(d2, aes(x=x,y=y,color=type)) + 
+  geom_point() +
+  geom_line() +
+  facet_grid(type~.) + 
+  stat_smooth(method="loess") +
+  scale_x_continuous(labels=pi_scales,
+                     breaks=seq(-pi,pi,pi/4))
+```
